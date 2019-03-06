@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114526935529303528}
   - component: {fileID: 58339666274774980}
   - component: {fileID: 50909159492151368}
+  - component: {fileID: 61173904536798496}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -58,13 +59,38 @@ CircleCollider2D:
   m_GameObject: {fileID: 1417535765642414}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 7b9f4efc5907c5e4790ae0b4e9e320b7, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 65
+--- !u!61 &61173904536798496
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417535765642414}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 130, y: 130}
+  m_EdgeRadius: 0
 --- !u!114 &114526935529303528
 MonoBehaviour:
   m_ObjectHideFlags: 1

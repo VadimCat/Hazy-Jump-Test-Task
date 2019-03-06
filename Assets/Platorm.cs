@@ -22,8 +22,6 @@ public class Platorm : MonoBehaviour
             item.simulated = false;
         }
     }
-
-    Vector2 a;
     
     private void OnCollisionStay2D(Collision2D collision)
     {
@@ -35,7 +33,9 @@ public class Platorm : MonoBehaviour
             collision.rigidbody.bodyType = RigidbodyType2D.Static;
             collision.rigidbody.bodyType = RigidbodyType2D.Dynamic;
             collision.rigidbody.simulated = true;
-            collision.rigidbody.AddForce(a = new Vector2(-Mathf.Sin(z) * 12, Mathf.Cos(z) * 10), ForceMode2D.Impulse);
+            collision.rigidbody.transform.Translate(new Vector3(Mathf.Sin(z) * 20 * Time.deltaTime, Mathf.Cos(z) * 20) * Time.deltaTime,Space.World);
+
+            collision.rigidbody.AddForce(new Vector2(-Mathf.Sin(z) * 12, Mathf.Cos(z) * 10), ForceMode2D.Impulse);
             StartCoroutine(RigidDeactivate());
             StartCoroutine(PlatformFall());
             StartCoroutine(platformSet());
@@ -47,7 +47,7 @@ public class Platorm : MonoBehaviour
 
     IEnumerator platformSet()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.01f);
         GameSys.Instance.PlatformSet();
         GameSys.Instance.platformList[0].GetComponent<Platorm>().Activate();
     }
@@ -64,7 +64,7 @@ public class Platorm : MonoBehaviour
 
     IEnumerator PlatformFall()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.01f);
         while (true)
         {
             transform.Translate(new Vector3(0, -5 * Time.deltaTime));

@@ -19,8 +19,9 @@ public class GameSys : MonoBehaviour
     GameObject currentChar;
     Rigidbody2D currentCharRigid;
     public List<GameObject> platformList = new List<GameObject>();
-    bool gameStarted = false;
-    bool gameOver = true;
+    bool gameStarted;
+    bool gameOver;
+    public bool tapAvailable;
 
     public int platformlCount = 0;
     public int pattertnCounter = 0;
@@ -69,13 +70,14 @@ public class GameSys : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetKey(KeyCode.Space) & (gameStarted & !gameOver)))
+        if (Input.touchCount>0/*Input.GetKey(KeyCode.Space)*/ & gameStarted & !gameOver&tapAvailable)
         {
+            tapAvailable = false;
             currentCharRigid.bodyType = RigidbodyType2D.Static;
             currentCharRigid.bodyType = RigidbodyType2D.Dynamic;
             currentCharRigid.AddForce(new Vector2(0, -15), ForceMode2D.Impulse);
         }
-        if ((Input.GetKey(KeyCode.Space)) & !gameStarted & gameOver)
+        if (((Input.touchCount > 0/*Input.GetKey(KeyCode.Space)*/ & !gameStarted & gameOver))||Input.GetKeyDown(KeyCode.LeftControl))
         {
             GameStart();
         }
@@ -83,7 +85,10 @@ public class GameSys : MonoBehaviour
         {
             currentCharRigid.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
         }
-
+        if (Input.touchCount==0)/*(!Input.GetKey(KeyCode.Space))*/
+        {
+            tapAvailable = true;
+        }
     }
 
     public void PlatformSet()
@@ -143,13 +148,14 @@ public class GameSys : MonoBehaviour
                 }
             case PlatformPattern.insane:
                 {
-                    randomVector = new Vector3(Random.Range(-350, 350), Random.Range(-350, -300));
                     if (pattertnCounter % 2 == 0)
                     {
+                        randomVector = new Vector3(Random.Range(0, 350), Random.Range(-350, -300));
                         randomQuaternion = new Vector3(0, 0, Random.Range(8, 28));
                     }
                     else
                     {
+                        randomVector = new Vector3(Random.Range(-350, 0), Random.Range(-350, -300));
                         randomQuaternion = new Vector3(0, 0, Random.Range(-28, -8));
 
                     }
@@ -178,8 +184,7 @@ public class GameSys : MonoBehaviour
 
     public void ScreenStart()
     {
-
-        gameOver = true;
+        StartCoroutine(gameStart());
         Physics2D.gravity = new Vector2(0, 0);
         gameStarted = false;
         GameUI.SetActive(false);
@@ -204,7 +209,6 @@ public class GameSys : MonoBehaviour
         Physics2D.gravity = new Vector2(0, -10f);
         currentChar = Instantiate(CharPref, GameUI.transform);
         currentCharRigid = currentChar.GetComponent<Rigidbody2D>();
-
         currentCharRigid.AddForce(new Vector2(0, -5), ForceMode2D.Impulse);
         platformList[0].GetComponent<Platorm>().Activate();
     }
@@ -214,7 +218,6 @@ public class GameSys : MonoBehaviour
         int temp = platformList.Count;
         for (int i = 0; i <  temp; i++)
         {
-            Debug.Log(i);
             Destroy(platformList[0]);
             platformList.RemoveAt(0);
         }
@@ -232,5 +235,11 @@ public class GameSys : MonoBehaviour
         platformlCount = 0;
         pattertnCounter = 0;
         platformPattern = 0;
+    }
+    IEnumerator gameStart()
+    {
+        yield return new WaitForSeconds(0.05f);
+        tapAvailable = true;
+        gameOver = true;
     }
 }
